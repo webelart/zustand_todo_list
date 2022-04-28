@@ -1,51 +1,19 @@
 import React, {useEffect} from 'react';
 
-import { useToDoStore } from '../../data/stores/useToDoStore';
-import { InputPlus } from '../components/InputPlus';
-import { InputTask } from '../components/InputTask';
+// import { useToDoStore } from '../../data/stores/useToDoStore';
+import { ToDoList } from '../ToDoList';
+import { ToDoListDone } from '../ToDoListDone';
 
 import styles from './index.module.scss';
 
-export const App: React.FC = () => {
-    const [
-        tasks,
-        createTask,
-        updateTask,
-        removeTask
-    ] = useToDoStore(state => [
-        state.tasks,
-        state.createTask,
-        state.updateTask,
-        state.removeTask,
-    ]);
 
+export const App: React.FC = () => {
+    // const unsub2 = useToDoStore.subscribe(state => state.tasks, console.log)
     return (
-        <article className={styles.article}>
-            <h1 className={styles.articleTitle}>To Do App</h1>
-            <section className={styles.articleSection}>
-                <InputPlus
-                    onAdd={(title) => {
-                       if (title) {
-                            createTask(title)
-                       } 
-                    }}
-                />
-            </section>
-            <section className={styles.articleSection}>
-                {!tasks.length && (
-                    <p className={styles.articleText}>There is no one task.</p>
-                )}
-                {tasks.map((task) => (
-                    <InputTask
-                        key={task.id}
-                        id={task.id}
-                        title={task.title}
-                        onDone={removeTask}
-                        onEdited={updateTask}
-                        onRemoved={removeTask}
-                    />
-                ))}
-            </section>
-        </article>
+        <div>
+            <ToDoList />
+            <ToDoListDone />
+            <ToDoList mainTitle="To Do App Copy"/>
+        </div>
     );
 }
