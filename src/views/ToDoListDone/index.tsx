@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import shallow from 'zustand/shallow'
 
 import { useToDoStore } from '../../data/stores/useToDoStore';
@@ -6,33 +6,40 @@ import { useToDoStore } from '../../data/stores/useToDoStore';
 import styles from './index.module.scss';
 
 export const ToDoListDone: React.FC = () => {
-    const [
-        tasksDone,
-        createTaskDone,
-    ] = useToDoStore(state => [
-        state.tasksDone,
-        state.createTaskDone,
-        state.deleteEverything,
-    ]);
+    // const [
+    //     tasksDone,
+    //     createTaskDone,
+    // ] = useToDoStore(state => [
+    //     state.tasksDone,
+    //     state.createTaskDone,
+    //     state.deleteEverything,
+    // ]);
 
-    console.log(2, 'ToDoListDone component render')
+    const tasksDoneRef = useRef(useToDoStore.getState().tasksDone)
+    // Connect to the store on mount, disconnect on unmount, catch state-changes in a reference
+    useEffect(() => useToDoStore.subscribe(
+        state => (tasksDoneRef.current = state.tasksDone)
+    ), [])
+
+    // console.log(2, 'ToDoListDone component render')
     return (
         <article className={styles.article}>
             <h1 className={styles.articleTitle}>Done tasks</h1>
-            {!tasksDone.length && (
+            {!tasksDoneRef.current.length && (
                 <p className={styles.articleText}>There is no one done task.</p>
             )}
-            {tasksDone.map((task, index) => (
+            {tasksDoneRef.current.map((task, index) => (
                 <p
                     key={task.id}
                     className={styles.articleTextLeft}
                 >{index + 1}. {task.title}</p>
             ))}
             <br />
-            <button
+            <button>Get Done tasks</button>
+            {/* <button
                 className={styles.articleButton}
                 onClick={createTaskDone}
-            >Add fake done task</button>
+            >Add fake done task</button> */}
             <br />
             
             {/* <button

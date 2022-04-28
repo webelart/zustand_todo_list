@@ -25,7 +25,7 @@ export const ToDoList: React.FC<ToDoListProps> = ({
         state.removeTask,
     ]);
 
-    console.log(1, `${mainTitle} component render`)
+    // console.log(1, `${mainTitle} component render`)
     return (
         <article className={styles.article}>
             <h1 className={styles.articleTitle}>{mainTitle}</h1>
