@@ -1,5 +1,4 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware'
 
 import { generateId } from '../helpers';
 
@@ -18,13 +17,9 @@ interface ToDoStore {
     deleteEverything: () => void;
 }
 
-export const useToDoStore = create<ToDoStore>(devtools((set, get) => ({
+export const useToDoStore = create<ToDoStore>((set, get) => ({
     tasks: [],
-    tasksDone: [{
-        id: 'adsfasd',
-        title: 'My title',
-        createdAt: Date.now()
-    }],
+    tasksDone: [],
     createTask: (title) => {
         const { tasks } = get();
         const newTask = {
@@ -35,10 +30,7 @@ export const useToDoStore = create<ToDoStore>(devtools((set, get) => ({
 
         set({
             tasks: [newTask].concat(tasks),
-        },
-        false,
-        "tasks/createTask"
-        )
+        })
     },
     updateTask: (id: string, title: string) => {
         const { tasks } = get();
@@ -71,7 +63,7 @@ export const useToDoStore = create<ToDoStore>(devtools((set, get) => ({
     deleteEverything: () => {
         set({}, true)
     },
-}), { serialize: { options: true } }));
+}));
 
 // const unsub2 = useToDoStore.subscribe(state => state.tasks, console.log)
 
